@@ -15,7 +15,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-push-docker-image:
+  build:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
       # steps to perform in job
