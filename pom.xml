@@ -13,7 +13,7 @@
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>2.14.2.Final</quarkus.platform.version>
-    <docker.image.tag>com/via/sep6/bestmovies/movieservice</docker.image.tag>
+    <docker.image.tag>com/via/sep6/best-movies/${project.artifactId}</docker.image.tag>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
   </properties>
@@ -42,6 +42,10 @@
       <artifactId>quarkus-resteasy-reactive</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.jboss.logging</groupId>
+      <artifactId>jboss-logging</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
@@ -52,7 +56,36 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>artifact-registry</id>
+      <url>artifactregistry://europe-north1-maven.pkg.dev/bestmovies-e13f7/movie-service</url>
+    </snapshotRepository>
+    <repository>
+      <id>artifact-registry</id>
+      <url>artifactregistry://europe-north1-maven.pkg.dev/bestmovies-e13f7/movie-service</url>
+    </repository>
+  </distributionManagement>
+  <repositories>
+    <repository>
+      <id>artifact-registry</id>
+      <url>artifactregistry://europe-north1-maven.pkg.dev/bestmovies-e13f7/movie-service</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
   <build>
+    <extensions>
+    <extension>
+      <groupId>com.google.cloud.artifactregistry</groupId>
+      <artifactId>artifactregistry-maven-wagon</artifactId>
+      <version>2.2.0</version>
+    </extension>
+  </extensions>
     <plugins>
       <plugin>
         <groupId>${quarkus.platform.group-id}</groupId>
@@ -107,6 +140,14 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>16</source>
+          <target>16</target>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -142,6 +183,42 @@
         <quarkus.package.type>native</quarkus.package.type>
         <quarkus.container.image.build>true</quarkus.container.image.build>
         <quarkus.native.container.build>true</quarkus.native.container.build>
+        <quarkus.container.image.group/>
+        <quarkus.container.image.tag>dev</quarkus.container.image.tag>
+        <quarkus.container.image.name>${docker.image.tag}</quarkus.container.image.name>
+      </properties>
+    </profile>
+    <profile>
+      <id>jvm</id>
+      <activation>
+        <property>
+          <name>jvm</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${surefire-plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <systemProperties>
+                    <jvm.image.path>${project.build.directory}/${project.build.finalName}-runner</jvm.image.path>
+                  </systemProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <quarkus.package.type>legacy-jar</quarkus.package.type>
+        <quarkus.container.image.build>true</quarkus.container.image.build>
         <quarkus.container.image.group/>
         <quarkus.container.image.tag>dev</quarkus.container.image.tag>
         <quarkus.container.image.name>${docker.image.tag}</quarkus.container.image.name>
