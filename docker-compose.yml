@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  bestmovies:
+    hostname: bestmovies
+    image: com/via/sep6/bestmovies/movieservice:dev
+    ports:
+      - "8080"
+
+  grpc:
+    image: gusaul/grpcox:latest
+    ports:
+      - "6969"
