@@ -65,6 +65,7 @@ jobs:
 #        mvn clean verify
 
   build:
+    runs-on: ubuntu-latest
     steps:
     - name: Build jvm image
       run : mvn clean package -Pjvm --file pom.xml
@@ -79,6 +80,7 @@ jobs:
       run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 
   deploy:
+    runs-on: ubuntu-latest
     steps:
 #   - name: Deploy to GCP
 #     run: |
