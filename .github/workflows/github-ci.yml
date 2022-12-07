@@ -61,13 +61,13 @@ jobs:
 
     - name: Build and Unit-test
       run: |
-        mvn $MAVEN_CLI_OPTS version:set -DnewVersion=$(cat VERSION)
-        mvn $MAVEN_CLI_OPTS clean verify
+        mvn version:set -DnewVersion=$(cat VERSION)
+        mvn clean verify
 
     - name: Build jvm image
       run : |
-        mvn $MAVEN_CLI_OPTS version:set -DnewVersion=$(cat VERSION)
-        mvn $MAVEN_CLI_OPTS package
+        mvn version:set -DnewVersion=$(cat VERSION)
+        mvn package
 
 #    - name: Build and push Docker image
 #     run: |
