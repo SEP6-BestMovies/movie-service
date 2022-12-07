@@ -24,7 +24,7 @@ env:
   REGION: europe-north1
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -59,8 +59,15 @@ jobs:
     - name: Configure Docker
       run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
-    - name: Build with Maven
-      run: mvn clean package -Pjvm --file pom.xml
+    - name: Build and Unit-test
+      run: |
+        mvn $MAVEN_CLI_OPTS version:set -DnewVersion=$(cat VERSION)
+        mvn $MAVEN_CLI_OPTS clean verify
+
+    - name: Build jvm image
+      run : |
+        mvn $MAVEN_CLI_OPTS version:set -DnewVersion=$(cat VERSION)
+        mvn $MAVEN_CLI_OPTS package
 
 #    - name: Build and push Docker image
 #     run: |
@@ -76,4 +83,4 @@ jobs:
       run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 
     - name: Deploy maven package
-      run: mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DpomFile=pom.xml
+      run: mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
