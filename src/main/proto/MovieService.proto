@@ -15,6 +15,15 @@ message GetMoviesResponse {
   repeated Movie movies = 1;
 }
 
+message GetOneMovieRequest {
+  string title = 1;
+}
+
+message GetOneMovieResponse {
+  Movie movie = 1;
+}
+
 service MovieService {
   rpc getMovies (GetMoviesRequest) returns (GetMoviesResponse) {}
+  rpc getOneMovie (GetOneMovieRequest) returns (GetOneMovieResponse) {}
 }

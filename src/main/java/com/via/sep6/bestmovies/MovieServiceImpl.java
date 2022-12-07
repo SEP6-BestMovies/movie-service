@@ -1,16 +1,19 @@
 package com.via.sep6.bestmovies;
 
 import com.via.sep6.best.movies.MovieService;
+import com.via.sep6.best.movies.MovieServiceOuterClass;
 import com.via.sep6.best.movies.MovieServiceOuterClass.Movie;
 import com.via.sep6.best.movies.MovieServiceOuterClass.GetMoviesRequest;
 import com.via.sep6.best.movies.MovieServiceOuterClass.GetMoviesResponse;
 import com.via.sep6.bestmovies.repository.MovieRepository;
+import io.quarkus.grpc.GrpcService;
 import io.smallrye.mutiny.Uni;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import java.util.List;
 
+@GrpcService
 public class MovieServiceImpl implements MovieService {
 
     @Inject
@@ -24,6 +27,14 @@ public class MovieServiceImpl implements MovieService {
         log.info("Get Movies Api called.");
         List<Movie> movies = movieRepository.getMovies();
         GetMoviesResponse response = GetMoviesResponse.newBuilder().addAllMovies(movies).build();
+        return Uni.createFrom().item(response);
+    }
+
+    @Override
+    public Uni<MovieServiceOuterClass.GetOneMovieResponse> getOneMovie(MovieServiceOuterClass.GetOneMovieRequest request) {
+        log.info("Get One Movie Api called.");
+        Movie movie = movieRepository.getOneMovie(request.getTitle());
+        MovieServiceOuterClass.GetOneMovieResponse response = MovieServiceOuterClass.GetOneMovieResponse.newBuilder().setMovie(movie).build();
         return Uni.createFrom().item(response);
     }
 }
