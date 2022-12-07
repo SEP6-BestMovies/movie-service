@@ -18,7 +18,7 @@ env:
   REGISTRY: docker.pkg.dev
   IMAGE_NAME: com/via/sep6/bestmovies/movieservice
   OWNER: bestmovies
-  GCP_PROJECT_ID: movie-service
+  MAVEN_NAME: movieservice
   GCP_APP_NAME: movie-service
   REGION: europe-north1
 
@@ -70,3 +70,10 @@ jobs:
     - name: Deploy to GCP
       run: |
         gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
+        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
+
+    - name: Build maven package
+      run: docker build -f src/main/docker/Dockerfile.legacy-jar -t europe-north1-maven.pkg.dev/bestmovies-e13f7/movieservice/com/via/sep6/bestmovies/movieservice:0.0.1 .
+
+    - name: Deploy maven package
+      run: mvn deploy -Durl=artifactregistry://europe-north1-maven.pkg.dev/bestmovies-e13f7/movieservice/com/via/sep6/bestmovies/movieservice:0.0.1 -DpomFile=pom.xml
