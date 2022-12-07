@@ -1,17 +1,31 @@
 package com.via.sep6.bestmovies.model;
 
+import io.vertx.mutiny.sqlclient.Row;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Movie {
+    
+    @Id
+    @Column(name = "id")
     private int id;
+    
+    @Column(name = "title")
     private String title;
-    private int releaseYear;
+    
+    @Column(name = "year")
+    private int year;
 
     public Movie() {
     }
 
-    public Movie(int id, String title, int releaseYear) {
+    public Movie(int id, String title, int year) {
         this.id = id;
         this.title = title;
-        this.releaseYear = releaseYear;
+        this.year = year;
     }
 
     public int getId() {
@@ -30,12 +44,19 @@ public class Movie {
         this.title = title;
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public int getYear() {
+        return year;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public static Movie from(Row row) {
+        final Movie movie = new Movie();
+        movie.title = row.getString("title");
+        movie.year = row.getInteger("year");
+        return movie;
     }
 
     @Override
@@ -43,7 +64,7 @@ public class Movie {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", releaseYear=" + releaseYear +
+                ", year=" + year +
                 '}';
     }
 }

@@ -25,16 +25,23 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Uni<GetMoviesResponse> getMovies(GetMoviesRequest request) {
         log.info("Get Movies Api called.");
-        List<Movie> movies = movieRepository.getMovies();
-        GetMoviesResponse response = GetMoviesResponse.newBuilder().addAllMovies(movies).build();
-        return Uni.createFrom().item(response);
+        List<com.via.sep6.bestmovies.model.Movie> movies = movieRepository.findAll();
+
+        GetMoviesResponse.Builder responseBuilder = GetMoviesResponse.newBuilder();
+
+        for(com.via.sep6.bestmovies.model.Movie movie : movies) {
+            responseBuilder.addMovies(ObjectMapper.toObjMovie(movie));
+        }
+
+        return Uni.createFrom().item(responseBuilder.build());
     }
 
     @Override
     public Uni<MovieServiceOuterClass.GetOneMovieResponse> getOneMovie(MovieServiceOuterClass.GetOneMovieRequest request) {
         log.info("Get One Movie Api called.");
-        Movie movie = movieRepository.getOneMovie(request.getTitle());
-        MovieServiceOuterClass.GetOneMovieResponse response = MovieServiceOuterClass.GetOneMovieResponse.newBuilder().setMovie(movie).build();
+        com.via.sep6.bestmovies.model.Movie movie = movieRepository.getOneByTitle(request.getTitle());
+        Movie schemaMovie = ObjectMapper.toObjMovie(movie);
+        MovieServiceOuterClass.GetOneMovieResponse response = MovieServiceOuterClass.GetOneMovieResponse.newBuilder().setMovie(schemaMovie).build();
         return Uni.createFrom().item(response);
     }
 }
