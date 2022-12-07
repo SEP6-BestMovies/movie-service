@@ -81,4 +81,5 @@ jobs:
       run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 
     - name: Deploy maven package
-      run: mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --version=$(cat VERSION) -DpomFile=pom.xml
+      run: |
+        mvn release:clean release:prepare release:perform -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DreleaseVersion=$(cat VERSION)
