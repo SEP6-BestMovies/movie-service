@@ -69,5 +69,4 @@ jobs:
 
     - name: Deploy to GCP
       run: |
-
         gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
