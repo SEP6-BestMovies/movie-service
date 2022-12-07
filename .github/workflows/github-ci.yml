@@ -65,7 +65,7 @@ jobs:
 #        mvn clean verify
 
     - name: Build jvm image
-      run : mvn package
+      run : mvn clean package
 
 #    - name: Build and push Docker image
 #     run: |
