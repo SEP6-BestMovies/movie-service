@@ -82,6 +82,4 @@ jobs:
 
     - name: Deploy maven package
       run: |
-        git config user.email
-        git config user.name
-        mvn release:clean release:prepare release:perform -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DreleaseVersion=$(cat VERSION)
+        mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DreleaseVersion=$(cat VERSION)
