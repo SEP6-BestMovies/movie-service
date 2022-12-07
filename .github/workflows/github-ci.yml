@@ -63,10 +63,11 @@ jobs:
 
     - name: Build and push Docker image
       run: |
+        sudo chmod +x mvnw
         docker build -f src/main/docker/Dockerfile.legacy-jar -t europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
         docker push europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
 
     - name: Deploy to GCP
       run: |
-        chmod +x mvnw
+
         gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
