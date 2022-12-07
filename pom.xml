@@ -94,6 +94,11 @@
       </snapshots>
     </repository>
   </repositories>
+  <scm>
+    <connection>scm:git:git@github.com:user/project.git</connection>
+    <url>scm:git:git@github.com:user/project.git</url>
+    <developerConnection>scm:git:git@github.com:user/project.git</developerConnection>
+  </scm>
   <build>
     <extensions>
     <extension>
