@@ -59,15 +59,13 @@ jobs:
     - name: Configure Docker
       run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
-    - name: Build and Unit-test
-      run: |
-        mvn version:set -DnewVersion=$(cat VERSION)
-        mvn clean verify
+#    - name: Build and Unit-test
+#      run: |
+#        mvn version:set -DnewVersion=$(cat VERSION)
+#        mvn clean verify
 
     - name: Build jvm image
-      run : |
-        mvn version:set -DnewVersion=$(cat VERSION)
-        mvn package
+      run : mvn package
 
 #    - name: Build and push Docker image
 #     run: |
