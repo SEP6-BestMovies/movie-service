@@ -64,6 +64,7 @@ jobs:
 #        mvn version:set -DnewVersion=$(cat VERSION)
 #        mvn clean verify
 
+  build:
     - name: Build jvm image
       run : mvn clean package -Pjvm --file pom.xml
 
@@ -73,12 +74,13 @@ jobs:
 #        docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 #        docker push ${{ env.REGION }}-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
 
+    - name: Build maven package
+      run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
+
+  deploy:
 #    - name: Deploy to GCP
 #      run: |
 #        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image ${{ env.REGION }}-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
-
-    - name: Build maven package
-      run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 
     - name: Deploy maven package
       run: |
