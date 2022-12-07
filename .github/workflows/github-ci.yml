@@ -15,7 +15,8 @@ on:
     branches: [ "main" ]
 
 env:
-  REGISTRY: docker.pkg.dev
+  DOCKER_REGISTRY: docker.pkg.dev
+  MAVEN_REGISTRY: maven.pkg.dev
   IMAGE_NAME: com/via/sep6/bestmovies/movieservice
   OWNER: bestmovies
   MAVEN_NAME: movieservice
@@ -56,7 +57,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
 
     - name: Configure Docker
-      run: gcloud auth configure-docker europe-north1-docker.pkg.dev
+      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
     - name: Build with Maven
       run: mvn clean package -Pjvm --file pom.xml
@@ -64,16 +65,15 @@ jobs:
     - name: Build and push Docker image
       run: |
         sudo chmod +x mvnw
-        docker build -f src/main/docker/Dockerfile.legacy-jar -t europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
-        docker push europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
+        docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
+        docker push ${{ env.REGION }}-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
 
     - name: Deploy to GCP
       run: |
-        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
-        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image europe-north1-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
+        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image ${{ env.REGION }}-${{ env.REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
 
     - name: Build maven package
-      run: docker build -f src/main/docker/Dockerfile.legacy-jar -t europe-north1-maven.pkg.dev/bestmovies-e13f7/movieservice/com/via/sep6/bestmovies/movieservice:0.0.1 .
+      run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 
     - name: Deploy maven package
-      run: mvn deploy -Durl=artifactregistry://europe-north1-maven.pkg.dev/bestmovies-e13f7/movieservice/com/via/sep6/bestmovies/movieservice:0.0.1 -DpomFile=pom.xml
+      run: mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DpomFile=pom.xml
