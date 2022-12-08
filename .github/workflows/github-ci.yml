@@ -62,6 +62,16 @@ jobs:
     - name: Build maven package
       run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
 
+    - name: Build and push Docker image
+      run: |
+        sudo chmod +x mvnw
+        docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
+        docker push ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
+
     - name: Deploy maven package
       run: |
         mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DreleaseVersion=$(cat VERSION)
+
+    - name: Deploy to cloud run
+      run: |
+        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
