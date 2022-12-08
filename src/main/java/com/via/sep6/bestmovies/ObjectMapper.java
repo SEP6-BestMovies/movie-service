@@ -1,6 +1,6 @@
 package com.via.sep6.bestmovies;
 
-import com.via.sep6.best.movies.MovieServiceOuterClass.Movie;
+import com.via.sep6.best.movies.movie.MovieServiceOuterClass.Movie;
 
 import javax.enterprise.context.ApplicationScoped;
 

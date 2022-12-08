@@ -1,6 +1,6 @@
 syntax = 'proto3';
 
-package com.via.sep6.best.movies;
+package com.via.sep6.best.movies.movie;
 
 message Movie {
   int32 id = 1;

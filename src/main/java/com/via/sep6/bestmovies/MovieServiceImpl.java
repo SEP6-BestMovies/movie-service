@@ -1,10 +1,10 @@
 package com.via.sep6.bestmovies;
 
-import com.via.sep6.best.movies.MovieService;
-import com.via.sep6.best.movies.MovieServiceOuterClass;
-import com.via.sep6.best.movies.MovieServiceOuterClass.Movie;
-import com.via.sep6.best.movies.MovieServiceOuterClass.GetMoviesRequest;
-import com.via.sep6.best.movies.MovieServiceOuterClass.GetMoviesResponse;
+import com.via.sep6.best.movies.movie.MovieService;
+import com.via.sep6.best.movies.movie.MovieServiceOuterClass;
+import com.via.sep6.best.movies.movie.MovieServiceOuterClass.Movie;
+import com.via.sep6.best.movies.movie.MovieServiceOuterClass.GetMoviesRequest;
+import com.via.sep6.best.movies.movie.MovieServiceOuterClass.GetMoviesResponse;
 import com.via.sep6.bestmovies.repository.MovieRepository;
 import io.quarkus.grpc.GrpcService;
 import io.smallrye.mutiny.Uni;
