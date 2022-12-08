@@ -56,9 +56,6 @@ jobs:
     - name: Setup GCP environment
       uses: google-github-actions/setup-gcloud@v1
 
-    - name: Configure Docker
-      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
-
 #    - name: Build and Unit-test
 #      run: |
 #        mvn version:set -DnewVersion=$(cat VERSION)
