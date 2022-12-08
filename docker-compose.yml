@@ -1,12 +1,6 @@
 version: "3.8"
 
 services:
-  userservice:
-    hostname: userservice
-    image: com/via/sep6/bestmovies/userservice:dev
-    ports:
-      - "8081"
-      -
   movieservice:
     hostname: movieservice
     image: com/via/sep6/bestmovies/movieservice:dev
