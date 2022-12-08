@@ -46,6 +46,9 @@ jobs:
         service_account: ${{ secrets.GCP_EMAIL }}
         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
+    - name: Configure Docker
+      run: gcloud auth configure-docker europe-north1-docker.pkg.dev
+
     - name: Setup GCP environment
       uses: google-github-actions/setup-gcloud@v1
 
