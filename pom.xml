@@ -168,43 +168,6 @@
   </build>
   <profiles>
     <profile>
-      <id>native</id>
-      <activation>
-        <property>
-          <name>native</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${surefire-plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <configuration>
-                  <systemProperties>
-                    <naive.image.path>${project.build.directory}/${project.build.finalName}-runner</naive.image.path>
-                  </systemProperties>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-      <properties>
-        <quarkus.package.type>native</quarkus.package.type>
-        <quarkus.container.image.build>true</quarkus.container.image.build>
-        <quarkus.native.container.build>true</quarkus.native.container.build>
-        <quarkus.container.image.group/>
-        <quarkus.container.image.tag>dev</quarkus.container.image.tag>
-        <quarkus.container.image.name>${docker.image.tag}</quarkus.container.image.name>
-      </properties>
-    </profile>
-    <profile>
       <id>jvm</id>
       <activation>
         <property>
