@@ -10,4 +10,4 @@ services:
   grpc:
     image: gusaul/grpcox:latest
     ports:
-      - "6969"
+      - "8000"
