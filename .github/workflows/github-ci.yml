@@ -73,4 +73,6 @@ jobs:
         gcloud run deploy ${{ env.GCP_APP_NAME }} --image ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
 
     - name: Deploy endpoint
-      run: gcloud endpoints services deploy api_config.yaml
+      run: |
+        protoc --include_imports --include_source_info src/main/proto/MovieService.proto --descriptor_set_out out.pb
+        gcloud endpoints services deploy out.pb api_config.yaml
