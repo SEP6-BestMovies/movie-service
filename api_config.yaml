@@ -3,7 +3,7 @@ config_version: 3
 name: movieservice.endpoints.bestmovies-e13f7.cloud.goog
 title: Movie Service API
 apis:
-  - name: src/main/proto/com.via.sep6.best.movies.movie.MovieService
+  - name: com.via.sep6.best.movies.movie.MovieService
 usage:
   rules:
   - selector: "*"
