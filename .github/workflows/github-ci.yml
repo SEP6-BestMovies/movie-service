@@ -73,4 +73,4 @@ jobs:
         gcloud run deploy ${{ env.GCP_APP_NAME }} --image ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
 
     - name: Deploy endpoint
-      run: gcloud endpoints deploy ${{ env.GCP_APP_NAME }} api_config.yaml
+      run: gcloud endpoints services deploy api_config.yaml
