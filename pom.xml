@@ -16,6 +16,8 @@
     <docker.image.tag>com/via/sep6/best-movies/${project.artifactId}</docker.image.tag>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+    <grpc.version>1.50.2</grpc.version>
+    <protoc.version>3.19.6</protoc.version>
   </properties>
   <dependencyManagement>
     <dependencies>
