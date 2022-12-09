@@ -74,6 +74,6 @@ jobs:
 
     - name: Deploy endpoint
       run: |
-        sudo apt install protobuf-c-compiler
+        sudo apt-get install protobuf-compiler
         protoc --include_imports --include_source_info src/main/proto/MovieService.proto --descriptor_set_out out.pb
         gcloud endpoints services deploy out.pb api_config.yaml
