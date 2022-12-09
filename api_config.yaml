@@ -1,6 +1,6 @@
 type: google.api.Service
 config_version: 3
-name: bestmovies.movieservice.bestmovies-e13f7.cloud.goog
+name: movieservice.endpoints.bestmovies-e13f7.cloud.goog
 title: Movie Service API
 apis:
   - name: com.via.sep6.best.movies.movie.MovieService
