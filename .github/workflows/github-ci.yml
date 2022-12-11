@@ -22,7 +22,6 @@ env:
   MAVEN_NAME: movieservice
   GCP_APP_NAME: movie-service
   REGION: europe-north1
-  PROTO_SRC_DIR: src/main/proto
 
 jobs:
   setup-build-deploy:
@@ -54,7 +53,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
 
     - name: Build jvm image
-      run : mvn clean package -Pjvm --file pom.xml
+      run : mvn clean package -Pjvm
 
     - name: Build maven package
       run: docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
@@ -76,5 +75,5 @@ jobs:
     - name: Deploy endpoint
       run: |
         sudo apt-get install protobuf-compiler
-        protoc -I=${{ env.PROTO_SRC_DIR }} --java_out=${{ env.PROTO_SRC_DIR }} ${{ env.PROTO_SRC_DIR }}/MovieService.proto
-        gcloud endpoints services deploy api_config.yaml
+        protoc --include_imports --include_source_info src/main/proto/MovieService.proto --descriptor_set_out movie.pb
+        gcloud endpoints services deploy movie.pb api_config.yaml
