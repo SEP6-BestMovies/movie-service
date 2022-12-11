@@ -4,6 +4,7 @@ name: movieservice.endpoints.bestmovies-e13f7.cloud.goog
 title: Movie Service API
 endpoints:
   - name: movieservice.endpoints.bestmovies-e13f7.cloud.goog
+    target: "0.0.0.0"
 apis:
   - name: com.via.sep6.best.movies.movie.MovieService
 usage:
@@ -14,3 +15,4 @@ backend:
   rules:
     - selector: "*"
       address: grpc://movie-service-isjwavbwvq-lz.a.run.app
+      disable_auth: true
