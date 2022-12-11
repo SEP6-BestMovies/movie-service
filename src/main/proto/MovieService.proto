@@ -25,6 +25,10 @@ message GetOneMovieResponse {
 }
 
 service MovieService {
-  rpc getMovies (GetMoviesRequest) returns (GetMoviesResponse) {}
-  rpc getOneMovie (GetOneMovieRequest) returns (GetOneMovieResponse) {}
+  rpc getMovies (GetMoviesRequest) returns (GetMoviesResponse) {
+    option (google.api.http) = { get: "/v1/getmovies}" };
+  }
+  rpc getOneMovie (GetOneMovieRequest) returns (GetOneMovieResponse) {
+    option (google.api.http) = { get: "/v1/getonemovie/{title}" };
+  }
 }
