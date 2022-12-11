@@ -3,6 +3,9 @@ syntax = 'proto3';
 package com.via.sep6.best.movies.movie;
 option java_package = "com.via.sep6.best.movies.movie";
 
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+
 message Movie {
   int32 id = 1;
   string title = 2;

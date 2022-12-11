@@ -52,7 +52,7 @@ jobs:
     - name: Setup GCP environment
       uses: google-github-actions/setup-gcloud@v1
 
-    - name: Build native image
+    - name: Build jvm image
       run : mvn clean package -Pjvm --file pom.xml
 
     - name: Build maven package
