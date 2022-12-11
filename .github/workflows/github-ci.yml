@@ -76,4 +76,6 @@ jobs:
       run: |
         sudo apt-get install protobuf-compiler
         protoc --include_imports --include_source_info src/main/proto/movie/MovieService.proto --descriptor_set_out out.pb
+        protoc --include_imports --include_source_info src/main/proto/google/api/annotations.proto --descriptor_set_out out.pb
+        protoc --include_imports --include_source_info src/main/proto/google/api//http.proto --descriptor_set_out out.pb
         gcloud endpoints services deploy out.pb api_config.yaml
