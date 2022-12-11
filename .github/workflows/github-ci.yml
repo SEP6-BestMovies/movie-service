@@ -76,4 +76,4 @@ jobs:
 
     - name: Deploy to cloud run
       run: |
-        gcloud run deploy ${{ env.GCP_APP_NAME }} --image ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
+        gcloud run deploy ${{ env.GCP_APP_NAME }} --image ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed --set-env-vars=ENDPOINTS_SERVICE_NAME=movieservice.endpoints.bestmovies-e13f7.cloud.goog
