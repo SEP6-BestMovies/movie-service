@@ -8,3 +8,7 @@ usage:
   rules:
   - selector: "*"
     allow_unregistered_calls: true
+backend:
+  rules:
+    - selector: "*"
+      address: grpcs://movie-service-isjwavbwvq-lz.a.run.app

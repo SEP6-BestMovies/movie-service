@@ -64,6 +64,12 @@ jobs:
         docker build -f src/main/docker/Dockerfile.legacy-jar -t ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) .
         docker push ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION)
 
+    - name: Deploy endpoint
+      run: |
+        sudo apt-get install protobuf-compiler
+        protoc --include_imports --include_source_info src/main/proto/MovieService.proto --descriptor_set_out movie.pb
+        gcloud endpoints services deploy movie.pb api_config.yaml
+
     - name: Deploy maven package
       run: |
         mvn deploy -Durl=artifactregistry://${{ env.REGION }}-${{ env.MAVEN_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.MAVEN_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) -DreleaseVersion=$(cat VERSION)
@@ -71,9 +77,3 @@ jobs:
     - name: Deploy to cloud run
       run: |
         gcloud run deploy ${{ env.GCP_APP_NAME }} --image ${{ env.REGION }}-${{ env.DOCKER_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ env.GCP_APP_NAME }}/${{ env.IMAGE_NAME }}:$(cat VERSION) --region ${{ env.REGION }} --platform managed
-
-    - name: Deploy endpoint
-      run: |
-        sudo apt-get install protobuf-compiler
-        protoc --include_imports --include_source_info src/main/proto/MovieService.proto --descriptor_set_out movie.pb
-        gcloud endpoints services deploy movie.pb api_config.yaml
