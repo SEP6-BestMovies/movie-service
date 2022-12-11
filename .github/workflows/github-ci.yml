@@ -22,6 +22,7 @@ env:
   MAVEN_NAME: movieservice
   GCP_APP_NAME: movie-service
   REGION: europe-north1
+  PROTO_SRC_DIR: src/main/proto
 
 jobs:
   setup-build-deploy:
@@ -75,7 +76,6 @@ jobs:
     - name: Deploy endpoint
       run: |
         sudo apt-get install protobuf-compiler
-        protoc --include_imports --include_source_info src/main/proto/movie/MovieService.proto --descriptor_set_out movie.pb
-        protoc --include_imports --include_source_info src/main/proto/google/api/annotations.proto --descriptor_set_out annotation.pb
-        protoc --include_imports --include_source_info src/main/proto/google/api//http.proto --descriptor_set_out http.pb
-        gcloud endpoints services deploy movie.pb annotation.pb http.pb api_config.yaml
+        protoc -I=${{ env.PROTO_SRC_DIR }} --java_out=${{ env.PROTO_SRC_DIR }} ${{ env.PROTO_SRC_DIR }}/MovieService.proto
+        protoc --include_imports --include_source_info ${{ env.GCP_APP_NAME }}/MovieService.proto --descriptor_set_out movie.pb
+        gcloud endpoints services deploy movie.pb api_config.yaml
