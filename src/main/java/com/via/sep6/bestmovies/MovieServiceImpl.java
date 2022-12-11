@@ -25,7 +25,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Uni<GetMoviesResponse> getMovies(GetMoviesRequest request) {
         log.info("Get Movies Api called.");
-        List<com.via.sep6.bestmovies.model.Movie> movies = movieRepository.findAll();
+        List<com.via.sep6.bestmovies.model.Movie> movies = movieRepository.getAllMovies();
 
         GetMoviesResponse.Builder responseBuilder = GetMoviesResponse.newBuilder();
 
