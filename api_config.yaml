@@ -14,4 +14,4 @@ usage:
 backend:
   rules:
     - selector: "*"
-      address: grpcs://movie-service-isjwavbwvq-lz.a.run.app
+      address: grpc://movie-service-isjwavbwvq-lz.a.run.app
