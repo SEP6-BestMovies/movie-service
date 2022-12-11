@@ -77,5 +77,4 @@ jobs:
       run: |
         sudo apt-get install protobuf-compiler
         protoc -I=${{ env.PROTO_SRC_DIR }} --java_out=${{ env.PROTO_SRC_DIR }} ${{ env.PROTO_SRC_DIR }}/MovieService.proto
-        protoc --include_imports --include_source_info ${{ env.GCP_APP_NAME }}/MovieService.proto --descriptor_set_out movie.pb
-        gcloud endpoints services deploy movie.pb api_config.yaml
+        gcloud endpoints services deploy api_config.yaml
