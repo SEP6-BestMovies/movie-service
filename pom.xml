@@ -78,6 +78,10 @@
       <artifactId>google-api-client</artifactId>
       <version>2.0.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+    </dependency>
   </dependencies>
   <distributionManagement>
     <snapshotRepository>
