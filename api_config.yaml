@@ -2,6 +2,9 @@ type: google.api.Service
 config_version: 3
 name: movieservice.endpoints.bestmovies-e13f7.cloud.goog
 title: Movie Service API
+endpoints:
+  - name: movieservice.endpoints.bestmovies-e13f7.cloud.goog
+    target: "192.0.2.1"
 apis:
   - name: com.via.sep6.best.movies.movie.MovieService
 usage:
